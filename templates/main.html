@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+    <title>Крестики-нолики</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div id="board">
+        <div id="cell-0" onclick="makeMove(0)"></div>
+        <div id="cell-1" onclick="makeMove(1)"></div>
+        <div id="cell-2" onclick="makeMove(2)"></div>
+        <div id="cell-3" onclick="makeMove(3)"></div>
+        <div id="cell-4" onclick="makeMove(4)"></div>
+        <div id="cell-5" onclick="makeMove(5)"></div>
+        <div id="cell-6" onclick="makeMove(6)"></div>
+        <div id="cell-7" onclick="makeMove(7)"></div>
+        <div id="cell-8" onclick="makeMove(8)"></div>
+    </div>
+    <div id="messages"></div>
+    <button id="rules-button" onclick="openModal()">Правила</button> <!-- Кнопка для открытия модального окна -->
+    <div id="rules-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p>Правила:</p>
+            <ul>
+                <li>Игроки по очереди ставят свой знак (X или O) в пустую ячейку 3x3 сетки.</li>
+                <li>Первый игрок, который выстроит три своих знака в ряд (горизонтально, вертикально или диагонально), выигрывает игру.</li>
+                <li>Если все ячейки заполнены, но никто не выиграл, игра считается ничьей.</li>
+            </ul>
+        </div>
+    </div>
+    <div id="players">
+        {% if clients and clients|length >= 2 %}
+            <div id="player1" class="player">{{ clients[0]['username'] }}</div>
+            <div id="player2" class="player">{{ clients[1]['username'] }}</div>
+        {% elif clients|length == 1 %}
+            <div id="player1" class="player">{{ clients[0]['username'] }}</div>
+            <div id="player2" class="player">Waiting for player 2...</div>
+        {% else %}
+            <div id="player1" class="player">Waiting for players...</div>
+            <div id="player2" class="player">Waiting for players...</div>
+        {% endif %}
+    </div>
+    <button id="reset-button" onclick="resetGame()" style="display: none;">Начать заново</button> <!-- Кнопка для сброса -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
